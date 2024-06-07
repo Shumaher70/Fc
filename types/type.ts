@@ -187,6 +187,6 @@ export type CursorChatProps = {
       cursor: { x: number; y: number };
       cursorColor: string;
       message: string;
-    }>,
+    }>
   ) => void;
 };
