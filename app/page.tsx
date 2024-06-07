@@ -2,7 +2,7 @@
 import { fabric } from "fabric";
 import { useState, useEffect, useRef } from "react";
 
-import { useMutation, useStorage } from "@/liveblocks.config";
+import { useMutation, useRedo, useStorage, useUndo } from "@/liveblocks.config";
 
 import {
   handleCanvasMouseDown,
@@ -16,14 +16,17 @@ import {
 
 import { ActiveElement } from "@/types/type";
 
+import { handleDelete, handleKeyDown } from "@/lib/key-events";
+import { defaultNavElement } from "@/constants";
 import LeftSidebar from "@/components/LeftSidebar";
 import RightSidebar from "@/components/RightSidebar";
 import Live from "@/components/Live";
 import Navbar from "@/components/Navbar";
-import { defaultNavElement } from "@/constants";
-import { handleDelete } from "@/lib/key-events";
 
 export default function Page() {
+  const undo = useUndo();
+  const redo = useRedo();
+
   const isDrawing = useRef(false);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const fabricRef = useRef<fabric.Canvas | null>(null);
@@ -113,7 +116,7 @@ export default function Page() {
       });
     });
 
-    canvas.on("mouse:up", (options) => {
+    canvas.on("mouse:up", () => {
       handleCanvasMouseUp({
         canvas,
         isDrawing,
@@ -135,6 +138,17 @@ export default function Page() {
     window.addEventListener("resize", () => {
       handleResize({
         canvas: fabricRef.current,
+      });
+    });
+
+    window.addEventListener("keydown", (e) => {
+      handleKeyDown({
+        e,
+        canvas: fabricRef.current,
+        undo,
+        redo,
+        syncShapeInStorage,
+        deleteShapeFromStorage,
       });
     });
 
