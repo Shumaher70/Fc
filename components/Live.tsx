@@ -15,6 +15,7 @@ import LiveCursors from "@/components/cursor/LiveCursors";
 import CursorChat from "@/components/cursor/CursorChat";
 import ReactionSelector from "@/components/reaction/ReactionButton";
 import FlyingReaction from "@/components/reaction/FlyingReaction";
+import { Comments } from "@/components/comments/Comments";
 
 type Props = {
   canvasRef: React.MutableRefObject<HTMLCanvasElement | null>;
@@ -169,7 +170,7 @@ const Live = ({ canvasRef }: Props) => {
       onPointerLeave={handlePointerLeave}
       onPointerDown={handlePointerDown}
       onPointerUp={handlePointerUp}
-      className="flex h-[100vh] w-full items-center justify-center text-center"
+      className="relative flex h-full w-full flex-1 items-center justify-center"
     >
       <canvas ref={canvasRef} />
 
@@ -182,6 +183,7 @@ const Live = ({ canvasRef }: Props) => {
           value={r.value}
         />
       ))}
+
       {cursor && (
         <CursorChat
           cursor={cursor}
@@ -190,6 +192,7 @@ const Live = ({ canvasRef }: Props) => {
           updateMyPresence={updateMyPresence}
         />
       )}
+
       {cursorState.mode === CursorMode.ReactionSelector && (
         <ReactionSelector
           setReaction={(reaction) => {
@@ -197,7 +200,10 @@ const Live = ({ canvasRef }: Props) => {
           }}
         />
       )}
+
       <LiveCursors others={others} />
+
+      <Comments />
     </div>
   );
 };
