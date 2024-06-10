@@ -7,7 +7,6 @@ import {
   ThreadMetadata,
   useEditThreadMetadata,
   useThreads,
-  useUser,
 } from "@/liveblocks.config";
 import { useMaxZIndex } from "@/lib/useMaxZIndex";
 
